@@ -1,0 +1,41 @@
+[
+ {
+  "booked_vehicles": 3,
+  "docstatus": 0,
+  "doctype": "Service Slot",
+  "maximum_vehicles": 4,
+  "modified": "2026-08-31 21:57:43.334562",
+  "name": "SLOT-001",
+  "service_date": "2026-09-01",
+  "slot_id": "1",
+  "slot_time": "14:44:27",
+  "slot_title": " 2026-09-01 ",
+  "status": "Available"
+ },
+ {
+  "booked_vehicles": 1,
+  "docstatus": 0,
+  "doctype": "Service Slot",
+  "maximum_vehicles": 2,
+  "modified": "2026-08-31 21:57:25.618920",
+  "name": "SLOT-003",
+  "service_date": "2026-10-20",
+  "slot_id": "3",
+  "slot_time": "21:56:04",
+  "slot_title": " 2026-10-20 ",
+  "status": "Full"
+ },
+ {
+  "booked_vehicles": 2,
+  "docstatus": 0,
+  "doctype": "Service Slot",
+  "maximum_vehicles": 5,
+  "modified": "2026-08-31 22:23:04.627768",
+  "name": "SLOT-002",
+  "service_date": "2026-10-02",
+  "slot_id": "2",
+  "slot_time": "14:44:50",
+  "slot_title": " 2026-10-02 ",
+  "status": "Available"
+ }
+]

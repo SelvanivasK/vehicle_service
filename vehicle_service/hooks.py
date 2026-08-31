@@ -79,6 +79,11 @@ app_license = "mit"
 # 	"filters": "vehicle_service.utils.jinja_filters"
 # }
 
+
+fixtures =[
+    "Service Slot",
+]
+
 # Installation
 # ------------
 

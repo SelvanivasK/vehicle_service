@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "SLOT-.###",
+ "creation": "2026-08-31 14:40:03.135637",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "slot_title",
+  "slot_id",
+  "service_date",
+  "slot_time",
+  "column_break_fhma",
+  "maximum_vehicles",
+  "booked_vehicles",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "slot_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Slot ID ",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "service_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Service Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "slot_time",
+   "fieldtype": "Time",
+   "label": "Slot Time"
+  },
+  {
+   "fieldname": "column_break_fhma",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "maximum_vehicles",
+   "fieldtype": "Int",
+   "label": "Maximum Vehicles"
+  },
+  {
+   "fieldname": "booked_vehicles",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Booked Vehicles ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Available\nFull\nClosed"
+  },
+  {
+   "fieldname": "slot_title",
+   "fieldtype": "Data",
+   "label": "Slot Title",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-08-31 21:57:57.049982",
+ "modified_by": "Administrator",
+ "module": "Vehicle Service",
+ "name": "Service Slot",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "slot_title"
+}
