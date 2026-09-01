@@ -11,10 +11,6 @@ frappe.ui.form.on("Service Booking", {
 
 	refresh(frm) {
 		frm.set_df_property("status", "read_only", 1);
-
-		if (frm.is_new()) {
-			frm.set_value("status", "Draft");
-		}
 	},
 
 	customer(frm) {
@@ -24,16 +20,8 @@ frappe.ui.form.on("Service Booking", {
 			frm.set_value("discount_amount", 0);
 			return;
 		}
+		calculate_discount(frm);
 
-		frappe.db.get_value("Customer", frm.doc.customer, "customer_type").then((response) => {
-			let discount = 0;
-
-			if (response.message.customer_type === "Corporate") {
-				discount = frm.doc.base_amount * 0.15;
-			}
-
-			frm.set_value("discount_amount", discount);
-		});
 	},
 
 	service_type(frm) {
