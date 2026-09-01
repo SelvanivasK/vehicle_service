@@ -14,6 +14,7 @@
   "column_break_qyzr",
   "service_date",
   "service_type",
+  "status",
   "section_break_tmuu",
   "add_ons",
   "amount_section",
@@ -21,7 +22,6 @@
   "discount_amount",
   "column_break_rjyu",
   "total_amount",
-  "status",
   "amended_from"
  ],
  "fields": [
@@ -70,7 +70,9 @@
   {
    "fieldname": "section_break_tmuu",
    "fieldtype": "Section Break",
-   "label": "Add Ons"
+   "label": "Add Ons",
+   "options": "Draft\nConfirmed\nCancelled",
+   "read_only": 1
   },
   {
    "fieldname": "add_ons",
@@ -110,8 +112,7 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nConfirmed\nCancelled"
+   "label": "Status"
   },
   {
    "fieldname": "amended_from",
@@ -128,7 +129,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-31 20:20:16.285488",
+ "modified": "2026-09-01 07:58:38.324877",
  "modified_by": "Administrator",
  "module": "Vehicle Service",
  "name": "Service Booking",

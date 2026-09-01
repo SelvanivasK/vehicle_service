@@ -7,10 +7,7 @@ from frappe.utils import getdate
 
 
 class ServiceBooking(Document):
-
-	def validate(self):
-		if not self.status:
-			self.status = "Draft"
+		
 
 	def before_submit(self):
 		self.validate_required_fields()
@@ -22,10 +19,17 @@ class ServiceBooking(Document):
 		self.status = "Confirmed"
 
 	def on_submit(self):
-		self.update_slot_on_submit()
+		slot = frappe.get_doc("Service Slot",self.service_slot)
+		slot.booked_vehicles = (slot.booked_vehicles or 0) + 1
+		if slot.booked_vehicles >= slot.maximum_vehicles:
+			slot.status = "Full"
+		else:
+			slot.status = "Available"	
+		slot.save()
 
 	def before_cancel(self):
 		self.status = "Cancelled"
+   
 
 	def on_cancel(self):
 		self.update_slot_on_cancel()
@@ -33,16 +37,12 @@ class ServiceBooking(Document):
 	def validate_required_fields(self):
 		if not self.customer:
 			frappe.throw("Customer is required")
-
 		if not self.vehicle:
 			frappe.throw("Vehicle is required")
-
 		if not self.service_date:
 			frappe.throw("Service Date is required")
-
 		if not self.service_slot:
 			frappe.throw("Service Slot is required")
-
 		if not self.service_type:
 			frappe.throw("Service Type is required")
 
@@ -70,13 +70,10 @@ class ServiceBooking(Document):
 
 		if not slot:
 			frappe.throw("Service Slot does not exist")
-
 		if getdate(slot.service_date) != getdate(self.service_date):
 			frappe.throw("Service Slot date must match Service Date")
-
 		if slot.status in ["Full", "Closed"]:
 			frappe.throw("Selected Service Slot is not available")
-
 		if (slot.booked_vehicles or 0) >= (slot.maximum_vehicles or 0):
 			frappe.throw("Service Slot is full")
 
@@ -103,10 +100,6 @@ class ServiceBooking(Document):
 		}
 
 		base_amount = service_prices.get(self.service_type)
-
-		if base_amount is None:
-			frappe.throw("Invalid Service Type")
-
 		self.base_amount = base_amount
 
 		addon_prices = {
@@ -120,10 +113,8 @@ class ServiceBooking(Document):
 
 		for row in self.add_ons:
 			rate = addon_prices.get(row.add_on)
-
 			if rate is None:
 				frappe.throw("Invalid Add-on: " + str(row.add_on))
-
 			if not row.quantity or row.quantity <= 0:
 				frappe.throw("Add-on quantity must be greater than zero")
 
@@ -131,49 +122,18 @@ class ServiceBooking(Document):
 			row.amount = row.quantity * rate
 			addon_total += row.amount
 
-		customer_type = frappe.db.get_value(
-			"Customer",
-			self.customer,
-			"customer_type"
-		)
+		customer_type = frappe.db.get_value("Customer",self.customer,"customer_type")
 
 		self.discount_amount = 0
-
 		if customer_type == "Corporate":
 			self.discount_amount = self.base_amount * 0.15
-
-		self.total_amount = (
-			self.base_amount
-			+ addon_total
-			- self.discount_amount
-		)
-
-	def update_slot_on_submit(self):
-		slot = frappe.get_doc(
-			"Service Slot",
-			self.service_slot
-		)
-
-		slot.booked_vehicles = (slot.booked_vehicles or 0) + 1
-
-		if slot.booked_vehicles >= slot.maximum_vehicles:
-			slot.status = "Full"
-		else:
-			slot.status = "Available"
-
-		slot.save()
-
+		self.total_amount = self.base_amount+ addon_total - self.discount_amount
+  
 	def update_slot_on_cancel(self):
-		slot = frappe.get_doc(
-			"Service Slot",
-			self.service_slot
-		)
-
+		slot = frappe.get_doc("Service Slot",self.service_slot)
 		if (slot.booked_vehicles or 0) > 0:
 			slot.booked_vehicles -= 1
-
 		if slot.status != "Closed":
 			slot.status = "Available"
-
 		slot.save()
-              
+        

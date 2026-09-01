@@ -29,7 +29,7 @@ frappe.ui.form.on("Service Booking", {
 			let discount = 0;
 
 			if (response.message.customer_type === "Corporate") {
-				discount = (frm.doc.base_amount || 0) * 0.15;
+				discount = frm.doc.base_amount * 0.15;
 			}
 
 			frm.set_value("discount_amount", discount);
@@ -43,7 +43,7 @@ frappe.ui.form.on("Service Booking", {
 			"Repair Service": 2500,
 		};
 
-		let price = prices[frm.doc.service_type] || 0;
+		let price = prices[frm.doc.service_type] ;
 		frm.set_value("base_amount", price);
 
 		calculate_discount(frm);
@@ -71,9 +71,7 @@ frappe.ui.form.on("Service Booking", {
 		if (!frm.doc.service_slot) {
 			return;
 		}
-
-		frappe.db
-			.get_value("Service Slot", frm.doc.service_slot, ["status", "service_date"])
+		frappe.db.get_value("Service Slot", frm.doc.service_slot, ["status", "service_date"])
 			.then((response) => {
 				let slot = response.message;
 
@@ -102,8 +100,8 @@ frappe.ui.form.on("Service Add-on", {
 			"Wheel Alignment": 700,
 		};
 
-		let rate = prices[row.add_on] || 0;
-		let amount = (row.quantity || 0) * rate;
+		let rate = prices[row.add_on] ;
+		let amount = row.quantity  * rate;
 
 		frappe.model.set_value(cdt, cdn, "rate", rate).then(() => {
 			frappe.model.set_value(cdt, cdn, "amount", amount).then(() => {
@@ -114,7 +112,7 @@ frappe.ui.form.on("Service Add-on", {
 
 	quantity(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
-		let amount = (row.quantity || 0) * (row.rate || 0);
+		let amount = row.quantity * row.rate ;
 
 		frappe.model.set_value(cdt, cdn, "amount", amount).then(() => {
 			calculate_total(frm);
@@ -155,7 +153,7 @@ function calculate_discount(frm) {
 function calculate_total(frm) {
 	let addon_total = 0;
 
-	(frm.doc.add_ons || []).forEach((row) => {
+	frm.doc.add_ons.forEach((row) => {
 		addon_total += row.amount || 0;
 	});
 
